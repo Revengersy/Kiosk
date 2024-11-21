@@ -10,7 +10,7 @@ public class Menu {
     private String explanationOfThisMenu;
 
     public Menu(String categoryName) {
-        this (categoryName, "(설명이 추가되지 않았습니다)");
+        this(categoryName, "(설명이 추가되지 않았습니다)");
     }
 
     public Menu(String categoryName, String explanationOfThisMenu) {
@@ -40,12 +40,12 @@ public class Menu {
         menuItems.add(menuItem);
     }
 
-    public void printMenu(){
-        System.out.printf("%s : %s %n",categoryOfThisMenu, explanationOfThisMenu);
+    public void printMenu() {
+        System.out.printf("%s : %s %n", categoryOfThisMenu, explanationOfThisMenu);
     }
 
     public void printMenuItems() {
-        for (MenuItem menuItem:menuItems){
+        for (MenuItem menuItem : menuItems) {
             menuItem.printItems();
         }
     }

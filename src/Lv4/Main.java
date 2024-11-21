@@ -15,7 +15,6 @@ public class Main {
         drinkMenu.addMenuItem(new MenuItem("Lemonade", 3.0, "상큼한 레모네이드"));
         drinkMenu.addMenuItem(new MenuItem("Iced Tea", 3.0, "차가운 아이스티"));
 
-
         Menu hamburgerMenu = new Menu("hamburger");
         hamburgerMenu.addMenuItem(new MenuItem("ShackBurger", 6.9, "토마토, 양상추, 쉑소스가 토핑된 치즈버거"));
         hamburgerMenu.addMenuItem(new MenuItem("SmokeShack ", 8.9, "베이컨, 체리 페퍼에 쉑소스가 토핑된 치즈버거"));
@@ -28,7 +27,7 @@ public class Main {
             menuItem.printItems();
         }
 
-        for(MenuItem menuItem : hamburgerMenu.getMenuItems()) {
+        for (MenuItem menuItem : hamburgerMenu.getMenuItems()) {
             menuItem.printItems();
         }
         System.out.println();
@@ -36,11 +35,5 @@ public class Main {
         lv4Kiosk.addMenu(drinkMenu);
         lv4Kiosk.addMenu(hamburgerMenu);
         lv4Kiosk.start();
-
-
     }
-
-
-
-
 }
