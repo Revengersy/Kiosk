@@ -15,20 +15,20 @@ public class Main {
         MenuItem menuItem3 = new MenuItem("CheeseBurger ", 6.9);
         MenuItem menuItem4 = new MenuItem("Hamburger ", "비프패티를 기반으로 야채가 들어간 기본버거");
 
-        ArrayList<MenuItem> menuList = new ArrayList<>();
+        ArrayList<MenuItem> menuItems = new ArrayList<>();
 
-        menuList.add(menuItem1);
-        menuList.add(menuItem2);
-        menuList.add(menuItem3);
-        menuList.add(menuItem4);
+        menuItems.add(menuItem1);
+        menuItems.add(menuItem2);
+        menuItems.add(menuItem3);
+        menuItems.add(menuItem4);
 
         user_loop:
         while (true) {
             System.out.println("[SHAKESHACK MENU]");
             System.out.printf("%d. %s | %s %n", 0, "종료", "종료합니다.");
 
-            for (int i = 0; i < menuList.size(); i++) {
-                MenuItem menuItem = menuList.get(i);
+            for (int i = 0; i < menuItems.size(); i++) {
+                MenuItem menuItem = menuItems.get(i);
                 System.out.printf("%d. %s | W %.1f | %n", i + 1, menuItem.name, menuItem.price);
             }
 
@@ -39,24 +39,24 @@ public class Main {
                     System.out.println("종료합니다");
                     break user_loop;
                 case 1:
-                    System.out.printf("입력된 메뉴: %d. %s %n", userInput, menuList.get(userInput - 1).name);
-                    System.out.printf("가격: %.1f %n", menuList.get(userInput - 1).price);
-                    System.out.println(menuList.get(userInput - 1).explanation);
+                    System.out.printf("입력된 메뉴: %d. %s %n", userInput, menuItems.get(userInput - 1).name);
+                    System.out.printf("가격: %.1f %n", menuItems.get(userInput - 1).price);
+                    System.out.println(menuItems.get(userInput - 1).explanation);
                     break;
                 case 2:
-                    System.out.printf("입력된 메뉴: %d. %s %n", userInput, menuList.get(userInput - 1).name);
-                    System.out.printf("가격: %.1f %n", menuList.get(userInput - 1).price);
-                    System.out.println(menuList.get(userInput - 1).explanation);
+                    System.out.printf("입력된 메뉴: %d. %s %n", userInput, menuItems.get(userInput - 1).name);
+                    System.out.printf("가격: %.1f %n", menuItems.get(userInput - 1).price);
+                    System.out.println(menuItems.get(userInput - 1).explanation);
                     break;
                 case 3:
-                    System.out.printf("입력된 메뉴: %d. %s %n", userInput, menuList.get(userInput - 1).name);
-                    System.out.printf("가격: %.1f %n", menuList.get(userInput - 1).price);
-                    System.out.println(menuList.get(userInput - 1).explanation);
+                    System.out.printf("입력된 메뉴: %d. %s %n", userInput, menuItems.get(userInput - 1).name);
+                    System.out.printf("가격: %.1f %n", menuItems.get(userInput - 1).price);
+                    System.out.println(menuItems.get(userInput - 1).explanation);
                     break;
                 case 4:
-                    System.out.printf("입력된 메뉴: %d. %s %n", userInput, menuList.get(userInput - 1).name);
-                    System.out.printf("가격: %.1f %n", menuList.get(userInput - 1).price);
-                    System.out.println(menuList.get(userInput - 1).explanation);
+                    System.out.printf("입력된 메뉴: %d. %s %n", userInput, menuItems.get(userInput - 1).name);
+                    System.out.printf("가격: %.1f %n", menuItems.get(userInput - 1).price);
+                    System.out.println(menuItems.get(userInput - 1).explanation);
                     break;
             }
 
