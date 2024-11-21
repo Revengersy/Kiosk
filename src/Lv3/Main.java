@@ -15,15 +15,15 @@ public class Main {
         MenuItem menuItem3 = new MenuItem("CheeseBurger ", 6.9);
         MenuItem menuItem4 = new MenuItem("Hamburger ", "비프패티를 기반으로 야채가 들어간 기본버거");
 
-        ArrayList<MenuItem> menuList = new ArrayList<>();
+        ArrayList<MenuItem> menuItems = new ArrayList<>();
 
-        menuList.add(menuItem1);
-        menuList.add(menuItem2);
-        menuList.add(menuItem3);
-        menuList.add(menuItem4);
+        menuItems.add(menuItem1);
+        menuItems.add(menuItem2);
+        menuItems.add(menuItem3);
+        menuItems.add(menuItem4);
 
 
-        Kiosk hamburgerKiosk = new Kiosk(menuList);
+        Kiosk hamburgerKiosk = new Kiosk(menuItems);
 
         hamburgerKiosk.start();
 
