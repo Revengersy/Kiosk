@@ -18,7 +18,7 @@ public class Kiosk {
             System.out.println("""
                     ==============================""");
             System.out.println("[SHAKESHACK MENU]");
-            System.out.printf("%d. %s | %s %n", 0, "종료", "종료합니다.");
+            System.out.printf("%d. %-11s:%s %n", 0, "종료", "종료합니다.");
 
             for (int i = 0; i < this.menus.size(); i++) {
                 Menu menu = this.menus.get(i);
@@ -55,7 +55,7 @@ public class Kiosk {
                 System.out.println("0. 이전으로");
                 for (int i = 0; i < menuItems.size(); i++) {
                     MenuItem menuItem = menuItems.get(i);
-                    System.out.printf("%d. %s | %.1f | %s %n", i + 1, menuItem.getName(), menuItem.getPrice(), menuItem.getExplanation());
+                    System.out.printf("%d. %-11s| %-11.1f | %-11s %n", i + 1, menuItem.getName(), menuItem.getPrice(), menuItem.getExplanation());
                     ;
                 }
 

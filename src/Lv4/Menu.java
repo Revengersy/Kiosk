@@ -41,7 +41,7 @@ public class Menu {
     }
 
     public void printMenu() {
-        System.out.printf("%s : %s %n", categoryOfThisMenu, explanationOfThisMenu);
+        System.out.printf("%-11s:%s%n", categoryOfThisMenu, explanationOfThisMenu);
     }
 
     public void printMenuItems() {

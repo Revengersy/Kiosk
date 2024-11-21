@@ -21,15 +21,15 @@ public class Main {
         hamburgerMenu.addMenuItem(new MenuItem("CheeseBurger ", 6.9));
         hamburgerMenu.addMenuItem(new MenuItem("Hamburger ", "비프패티를 기반으로 야채가 들어간 기본버거"));
 
-        // Drink 메뉴 출력
-        System.out.println();
-        for (MenuItem menuItem : drinkMenu.getMenuItems()) {
-            menuItem.printItems();
-        }
-
-        for (MenuItem menuItem : hamburgerMenu.getMenuItems()) {
-            menuItem.printItems();
-        }
+//        // Drink 메뉴 출력
+//        System.out.println();
+//        for (MenuItem menuItem : drinkMenu.getMenuItems()) {
+//            menuItem.printItems();
+//        }
+//
+//        for (MenuItem menuItem : hamburgerMenu.getMenuItems()) {
+//            menuItem.printItems();
+//        }
         System.out.println();
 
         lv4Kiosk.addMenu(drinkMenu);
