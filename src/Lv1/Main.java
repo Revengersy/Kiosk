@@ -19,7 +19,7 @@ public class Main {
         while (true) {
             System.out.println("[SHAKESHACK MENU]");
             for (int i = 0; i < menuIndexes.length; i++) {
-                System.out.printf("%d. %s | W %f | %n", menuIndexes[i], menuNames[i], menuPrices[i]);
+                System.out.printf("%d. %s | W %.1f | %n", menuIndexes[i], menuNames[i], menuPrices[i]);
             }
 
             String tmp = getVaildInputWithRegex("메뉴 번호를 입력해 주세요(0-4)", "[0-4]");
