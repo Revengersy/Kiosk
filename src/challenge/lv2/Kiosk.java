@@ -16,8 +16,10 @@ public class Kiosk {
     }
 
     public void start() {
+
         while (true) {
             printMainMenu();
+
             int userInput = getUserInput("메뉴 번호를 입력해 주세요", "[0-9]+");
 
             if (userInput == 0) {
@@ -35,7 +37,7 @@ public class Kiosk {
                 continue;
             } else {
                 System.out.println("입력 범위를 벗어났습니다");
-                break;
+                continue;
             }
 
         }
@@ -84,6 +86,7 @@ public class Kiosk {
                 }
             } else {
                 System.out.println("메뉴 범위를 벗어났습니다");
+                continue;
             }
         }
     }
