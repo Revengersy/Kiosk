@@ -1,4 +1,4 @@
-package challenge.lv1;
+package challenge.lv2;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -28,9 +28,9 @@ public class Kiosk {
             if (userInput > 0 && userInput <= menus.size()) {
                 Menu selectedMenu = menus.get(userInput - 1);
                 handleMenuSelection(selectedMenu);
-            } else if (userInput == menus.size() + 1) {
+            } else if (!cartedItems.isEmpty() && userInput == menus.size() + 1) {
                 handleCartView();
-            } else if (userInput == menus.size() + 2) {
+            } else if (!cartedItems.isEmpty() && userInput == menus.size() + 2) {
                 handleCartedItemDelete();
                 continue;
             } else {
@@ -58,9 +58,23 @@ public class Kiosk {
             }
 
             if (userInput > 0 && userInput <= menuItems.size()) {
+                MenuItem menuItem = null;
+                try {
+                menuItem = (MenuItem) menuItems.get(userInput - 1).clone();
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+
+                menuItem.printItem();
                 int cartInput = getUserInput("주문을 확정 하시겠습니까? (1: 확정, 2:취소)", "[1-2]");
                 if (cartInput == 1) {
-                    MenuItem menuItem = menuItems.get(userInput - 1);
+                    System.out.println("할인 정보를 입력해주세요.");
+                    UserType.printUserTypeInformation();
+
+                    int userTypeInput = getUserInput("할인 혜택을 선택해주세요.", "[1-4]");
+                    double dicount = UserType.getDiscountByIndex(userTypeInput);
+                    menuItem.applyDiscount(dicount);
+
                     printMenuItemDetails(menuItem);
                     cartedItems.add(menuItem);
                     System.out.println("장바구니에 추가되었습니다");
@@ -94,7 +108,7 @@ public class Kiosk {
         }
     }
 
-    private void handleCartedItemDelete(){
+    private void handleCartedItemDelete() {
         while (true) {
             System.out.println("주문취소 실행");
             printCart();
@@ -105,7 +119,10 @@ public class Kiosk {
                 cartedItems.get(displayInput - 1).printItem();
                 int deleteInput = getUserInput("아이템을 장바구니에서 제거 하시겠습니까? (1: 확정, 2:취소)", "[1-2]");
                 if (deleteInput == 1) {
-                    cartedItems.remove(displayInput - 1);
+                    String itemNameToRemove = cartedItems.get(displayInput - 1).getName().trim();
+                    cartedItems = new ArrayList<>(cartedItems.stream()
+                            .filter(item -> !item.getName().trim().equals(itemNameToRemove))
+                            .toList());
                     System.out.println("장바구니에서 항목이 제거되었습니다");
                     continue;
                 } else {
@@ -131,8 +148,8 @@ public class Kiosk {
     }
 
     private void printMainMenu() {
-        System.out.println("==============================");
         System.out.println("""
+                ==============================
                 [[SHACK MENU]]
                 
                 [MAIN MENU]""");
@@ -145,7 +162,7 @@ public class Kiosk {
             menu.printMenu();
         }
 
-        if (cartedItems.size() > 0) {
+        if (!cartedItems.isEmpty()) {
             System.out.println("""
                     
                     [ORDER MENU]""");
@@ -155,12 +172,13 @@ public class Kiosk {
     }
 
     private void printMenuItems(ArrayList<MenuItem> menuItems) {
-        System.out.println("> 세부 메뉴 항목을 입력해주세요");
-        System.out.println("0. 이전으로");
-        for (int i = 0; i < menuItems.size(); i++) {
-            MenuItem menuItem = menuItems.get(i);
-            System.out.printf("%d. %-11s| %-11.1f | %-11s %n", i + 1, menuItem.getName(), menuItem.getPrice(), menuItem.getExplanation());
-        }
+        System.out.println("""
+            > 세부 메뉴 항목을 입력해주세요
+            0. 이전으로""");
+        menuItems.stream()
+                .forEach(menuItem ->
+                        System.out.printf("%d. %-11s| %-11.1f | %-11s %n",
+                                menuItems.indexOf(menuItem) + 1, menuItem.getName(), menuItem.getPrice(), menuItem.getExplanation()));
     }
 
     private void printMenuItemDetails(MenuItem menuItem) {
@@ -170,7 +188,7 @@ public class Kiosk {
     }
 
     private void printCart() {
-        if (cartedItems.size() == 0) {
+        if (cartedItems.isEmpty()) {
             System.out.println("장바구니가 비어 있습니다");
             return;
         }
