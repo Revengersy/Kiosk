@@ -5,7 +5,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Kiosk lv4Kiosk = new Kiosk();
+        Kiosk challengeLv1Kiosk = new Kiosk();
 
         Menu drinkMenu = new Menu("drink", "시원한 음료를 즐겨보세요");
         drinkMenu.addMenuItem(new MenuItem("Coca Cola", 2.5, "시원한 코카콜라"));
@@ -21,8 +21,8 @@ public class Main {
 
         System.out.println();
 
-        lv4Kiosk.addMenu(drinkMenu);
-        lv4Kiosk.addMenu(hamburgerMenu);
-        lv4Kiosk.start();
+        challengeLv1Kiosk.addMenu(drinkMenu);
+        challengeLv1Kiosk.addMenu(hamburgerMenu);
+        challengeLv1Kiosk.start();
     }
 }
