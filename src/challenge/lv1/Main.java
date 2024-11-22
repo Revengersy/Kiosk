@@ -1,4 +1,4 @@
-package challenge.lv6;
+package challenge.lv1;
 
 public class Main {
 

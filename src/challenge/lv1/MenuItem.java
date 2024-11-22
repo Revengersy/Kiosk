@@ -1,4 +1,4 @@
-package challenge.lv6;
+package challenge.lv1;
 
 public class MenuItem {
     private String name;
@@ -33,6 +33,10 @@ public class MenuItem {
 
     public String getExplanation() {
         return explanation;
+    }
+
+    public void applyDiscount(double discount) {
+        price *= discount;
     }
 
     public void printItem() {
