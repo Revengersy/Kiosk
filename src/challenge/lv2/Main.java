@@ -1,5 +1,7 @@
 package challenge.lv2;
 
+import java.util.Arrays;
+
 public class Main {
 
 

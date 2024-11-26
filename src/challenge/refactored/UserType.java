@@ -1,6 +1,6 @@
-package challenge.lv2;
+package challenge.refactored;
 
-public enum UserType {
+public enum UserType implements iConsolable {
     VETERAN(1, "국가유공자", 0.10),
     SOLDIER(2, "군인", 0.05),
     STUDENT(3, "학생", 0.03),
@@ -22,10 +22,6 @@ public enum UserType {
         return discountRate;
     }
 
-    public String getUserCategory() {
-        return userCategory;
-    }
-
     // index에 따라 할인율을 찾는 메서드
     public static double getDiscountByIndex(int index) {
         while (true) {
@@ -38,11 +34,8 @@ public enum UserType {
         }
     }
 
-    // 모든 사용자 유형의 정보를 출력하는 메서드
-    public static void printUserTypeInformation() {
-        for (UserType userType : UserType.values()) {
-            System.out.printf("%d. | %-2s,|%-2.2f%-11%%n",
-                    userType.index, userType.getUserCategory(), userType.getDiscountRate() * 100);
-        }
-    }
+    @Override
+    public String getInformation(int index){
+        return String.format("%d. %s | %.2f", index, this.userCategory, this.discountRate);
+    };
 }
