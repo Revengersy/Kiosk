@@ -1,4 +1,4 @@
-package challenge.refactored;
+package challenge.lv2.refactored;
 
 public class MenuItem implements Cloneable, iConsolable {
     private final String name;
@@ -27,6 +27,10 @@ public class MenuItem implements Cloneable, iConsolable {
 
     public int getAmount() {
         return amount;
+    }
+
+    public double getSalePrice() {
+        return salePrice;
     }
 
     public void increaseAmount() {

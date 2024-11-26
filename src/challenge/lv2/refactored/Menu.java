@@ -1,4 +1,4 @@
-package challenge.refactored;
+package challenge.lv2.refactored;
 
 import java.util.ArrayList;
 

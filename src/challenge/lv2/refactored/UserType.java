@@ -1,4 +1,4 @@
-package challenge.refactored;
+package challenge.lv2.refactored;
 
 public enum UserType implements iConsolable {
     VETERAN(1, "국가유공자", 0.10),

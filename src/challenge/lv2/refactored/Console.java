@@ -1,11 +1,12 @@
-package challenge.refactored;
+package challenge.lv2.refactored;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 
-
+// 콘솔 화면 제어에 필요한 기능을 static으로 모아 놓음
+// 주로 List<T>들을 받고 이들을 출력, 선택, 확인 하는 기능들로 이어짐
 class Console {
 
     private static final Scanner scanner = new Scanner(System.in);

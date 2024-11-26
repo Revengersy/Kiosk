@@ -1,4 +1,4 @@
-package challenge.refactored;
+package challenge.lv2.refactored;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +9,14 @@ public class Kiosk {
     private ArrayList<Menu> basicMenus = new ArrayList<Menu>();
     private Cart cart;
     private ArrayList<Menu> cartMenus = new ArrayList<Menu>();
-    private final List<UserType> userTypes = Arrays.asList(UserType.values());;
+    private final List<UserType> userTypes = Arrays.asList(UserType.values());
+
 
     Kiosk() {
         cart = new Cart();
 
-        Menu cartView = new Menu("장바구니 조회");
-        Menu cartDelete = new Menu("장바구니 항목 지우기");
+        Menu cartView = new Menu("장바구니 조회", "");
+        Menu cartDelete = new Menu("장바구니 항목 지우기", "");
         cartMenus.add(cartView);
         cartMenus.add(cartDelete);
 
@@ -57,7 +58,7 @@ public class Kiosk {
         while (true) {
             Menu selectedMenu = Console.getSelection(basicMenus, userInput);
 
-            Console.printLine("0. 이전으로");
+            System.out.println(("0. 이전으로"));
             Console.printItems(selectedMenu.getItems(), 1);
 
             int itemInput = Console.getUserInput("아이템을 골라 주세요", "[0-9]+");
@@ -67,16 +68,23 @@ public class Kiosk {
             }
             if (Console.isPossibleIndex(selectedMenu.getItems(), 0, itemInput)) {
                 if (Console.isOkay("주문을 확정하시겠습니까? (1: 확정, 나머지: 취소)")) {
-                    Console.printItems(userTypes, 1);
 
-                    int discountInput = Console.getUserInput("할인 범위를 정해 주세요", "[0-9]+");
+                    discount_loop:
+                    while (true) {
+                        Console.printItems(userTypes, 1);
 
-                    if (Console.isPossibleIndex(userTypes, 0, discountInput)) {
-                        MenuItem selectedItem = Console.getSelection(selectedMenu.getItems(), itemInput);
-                        try {
-                            cart.addItem( (MenuItem) selectedItem.clone(), UserType.getDiscountByIndex(discountInput));
-                        } catch (CloneNotSupportedException e) {
-                            throw new RuntimeException(e);
+                        int discountInput = Console.getUserInput("할인 범위를 정해 주세요", "[0-9]+");
+
+                        if (Console.isPossibleIndex(userTypes, 0, discountInput)) {
+                            MenuItem selectedItem = Console.getSelection(selectedMenu.getItems(), itemInput);
+                            try {
+                                cart.addItem((MenuItem) selectedItem.clone(), UserType.getDiscountByIndex(discountInput));
+                            } catch (CloneNotSupportedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            break discount_loop;
+                        } else {
+                            System.out.println("올바른 범위를 입력해 주세요");
                         }
                     }
                 }
@@ -86,8 +94,10 @@ public class Kiosk {
 
     private void handleCartView(){
         Console.printItems(cart.getItems(), 1);
-        while (!Console.isOkay("이전으로 돌아가시겠습니까?(1: 이전으로)")) {
-            Console.printLine("---");
+        System.out.printf("총 구매금액: %.2f", cart.getTotalRevenue());
+        if (Console.isOkay("구매를 확정 하시겠습니까?(1: 구매완료, 나머지: 조회 종료)")) {
+            System.out.println("구매완료");
+            cart = new Cart();
         }
     }
 

@@ -1,4 +1,4 @@
-package challenge.refactored;
+package challenge.lv2.refactored;
 
 public class Main {
 
@@ -10,7 +10,7 @@ public class Main {
         drinkMenu.addMenuItem(new MenuItem("Lemonade", 3.0, "상큼한 레모네이드"));
         drinkMenu.addMenuItem(new MenuItem("Iced Tea", 3.0, "차가운 아이스티"));
 
-        Menu hamburgerMenu = new Menu("hamburger");
+        Menu hamburgerMenu = new Menu("hamburger", "쉑쉑 페티를 즐겨보아요");
         hamburgerMenu.addMenuItem(new MenuItem("ShackBurger", 6.9, "토마토, 양상추, 쉑소스가 토핑된 치즈버거"));
         hamburgerMenu.addMenuItem(new MenuItem("SmokeShack ", 8.9, "베이컨, 체리 페퍼에 쉑소스가 토핑된 치즈버거"));
         hamburgerMenu.addMenuItem(new MenuItem("CheeseBurger ", 6.9));

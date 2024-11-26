@@ -1,4 +1,4 @@
-package challenge.refactored;
+package challenge.lv2.refactored;
 
 import java.util.ArrayList;
 
@@ -26,6 +26,14 @@ public class Cart implements Cloneable, iConsolable {
             // 새로운 아이템이라면 리스트에 추가
             items.add(item);
         }
+    }
+
+    public double getTotalRevenue() {
+        double total = 0.0;
+        for (MenuItem item : items) {
+            total += item.getSalePrice();
+        }
+        return total;
     }
 
 
