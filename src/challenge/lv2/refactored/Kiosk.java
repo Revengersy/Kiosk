@@ -1,122 +1,144 @@
 package challenge.lv2.refactored;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
 
 public class Kiosk {
-
-    private ArrayList<Menu> basicMenus = new ArrayList<Menu>();
+    private ArrayList<Menu> basicMenus;
+    private ArrayList<Menu> cartMenus;
     private Cart cart;
-    private ArrayList<Menu> cartMenus = new ArrayList<Menu>();
-    private final List<UserType> userTypes = Arrays.asList(UserType.values());
+    private final ArrayList<UserType> userTypes;
 
-
-    Kiosk() {
+    public Kiosk() {
+        basicMenus = new ArrayList<>();
+        cartMenus = new ArrayList<>();
         cart = new Cart();
+        userTypes = new ArrayList<>(Arrays.asList(UserType.values()));
 
-        Menu cartView = new Menu("장바구니 조회", "");
-        Menu cartDelete = new Menu("장바구니 항목 지우기", "");
-        cartMenus.add(cartView);
-        cartMenus.add(cartDelete);
-
+        setCartMenus();
     }
 
     public void start() {
         while (true) {
-            boolean flagItemsInCart = !cart.isEmpty();
+            boolean isCartEmpty = cart.isEmpty();
 
-            Console.printLine("0. 종료하기");
-            Console.printItems(basicMenus, 1);
-            if (flagItemsInCart) {
-                Console.printItems(cartMenus, 1 + basicMenus.size());
+            Console.printConsoleItems(basicMenus, 1);
+            if (!isCartEmpty) {
+                Console.printConsoleItems(cartMenus, 1 + basicMenus.size());
             }
+            System.out.println("0. 종료하기");
 
-            int userInput = Console.getUserInput("메뉴를 골라 주세요.", "[0-9]+");
+            int userInput = InputHandler.getUserInput("메뉴를 골라 주세요", "[0-9]+");
 
-            if (Console.canEscape(userInput)) {
-                Console.printLine("종료합니다");
-                return;
+            if (userInput == 0) {
+                System.out.println("종료됩니다");
+                break;
             }
-            if (Console.isPossibleIndex(basicMenus, 0, userInput)) {
-                handleSelect(userInput);
-            } else if (flagItemsInCart && userInput == basicMenus.size() + 1) {
-                handleCartView();
-            } else if (flagItemsInCart && userInput == basicMenus.size() + 2) {
+            if (Console.isValidInput(basicMenus, userInput, 1)) {
+                handleItemSelection(userInput);
+            } else if (!isCartEmpty && userInput == basicMenus.size() + 1) {
+                handleCartOrder();
+            } else if (!isCartEmpty && userInput == basicMenus.size() + 2) {
                 handleCartDelete();
+            } else {
+                System.out.println("범위 밖 입력 테스트 완료");
+                continue;
             }
         }
     }
 
-    public void addMenu(Menu... menus) {
-        for (Menu menu : menus) {
-            this.basicMenus.add(menu);
-        }
+
+    public void addBasicMenus(Menu... menus) {
+        basicMenus.addAll(Arrays.asList(menus));
     }
 
-    private void handleSelect(int userInput) {
+    private void setCartMenus() {
+        Menu menu1 = new Menu("장바구니 확인하기");
+        Menu menu2 = new Menu("장바구니 아이템 삭제하기");
+
+        this.cartMenus.add(menu1);
+        this.cartMenus.add(menu2);
+    }
+
+    private void handleItemSelection(int userInput) {
         while (true) {
-            Menu selectedMenu = Console.getSelection(basicMenus, userInput);
+            Menu tmpMenu = Console.selectItem(basicMenus, userInput);
+            ArrayList<MenuItem> tmpItems = tmpMenu.getMenuItems();
 
-            System.out.println(("0. 이전으로"));
-            Console.printItems(selectedMenu.getItems(), 1);
+            System.out.println("0. 이전으로");
+            Console.printConsoleItems(tmpItems, 1);
 
-            int itemInput = Console.getUserInput("아이템을 골라 주세요", "[0-9]+");
+            int selectItemInput = InputHandler.getUserInput("장바구니에 담을 아이템을 골라 주세요", "[0-9]+");
 
-            if (Console.canEscape(itemInput)) {
-                return;
+            if (selectItemInput == 0) {
+                break;
             }
-            if (Console.isPossibleIndex(selectedMenu.getItems(), 0, itemInput)) {
-                if (Console.isOkay("주문을 확정하시겠습니까? (1: 확정, 나머지: 취소)")) {
+            if (Console.isValidInput(tmpItems, selectItemInput, 1)) {
+                if (InputHandler.isOkay("확정하시겠습니까?(확정이면 1 입력)")) {
+                    System.out.println(Console.selectItem(tmpItems, selectItemInput).getItemsInformation(1));
+                    cart.addItem(Console.selectItem(tmpItems, selectItemInput));
+                    System.out.println("장바구니에 물건이 담겼습니다.");
+                }
+            } else {
+                System.out.println("범위에서 벗어난 값을 골랐습니다.");
+            }
+        }
+    }
 
-                    discount_loop:
-                    while (true) {
-                        Console.printItems(userTypes, 1);
+    private void handleCartOrder() {
+        order_loop:
+        while (true) {
+            Console.printConsoleItems(cart.getItems(), 1);
 
-                        int discountInput = Console.getUserInput("할인 범위를 정해 주세요", "[0-9]+");
+            System.out.printf("총 금액: %.2f%n", cart.getTotalRevenue());
 
-                        if (Console.isPossibleIndex(userTypes, 0, discountInput)) {
-                            MenuItem selectedItem = Console.getSelection(selectedMenu.getItems(), itemInput);
-                            try {
-                                cart.addItem((MenuItem) selectedItem.clone(), UserType.getDiscountByIndex(discountInput));
-                            } catch (CloneNotSupportedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            break discount_loop;
-                        } else {
-                            System.out.println("올바른 범위를 입력해 주세요");
+            if (InputHandler.isOkay("구매하시겠습니까? (1을 누르면 구매)")) {
+                while (true) {
+                    System.out.println("0. 구매취소");
+                    Console.printConsoleItems(userTypes, 1);
+
+                    int discountInput = InputHandler.getUserInput("할인 항목을 골라 주세요", "[0-9]+");
+
+                    if (discountInput == 0) {
+                        break;
+                    }
+                    if (Console.isValidInput(userTypes, discountInput, 1)) {
+                        UserType tmp = Console.selectItem(userTypes, discountInput);
+                        System.out.printf("할인 적용 후 지불 금액: %.2f%n", cart.getTotalRevenue() * (1 - tmp.getDiscountRate()));
+                        if (InputHandler.isOkay("확정하시겠습니까? (1을 누르면 지불 확정)")) {
+                            System.out.println("구매되었습니다.");
+                            cart.clear();
+                            break order_loop;
                         }
                     }
                 }
-            }
-        }
-    }
-
-    private void handleCartView(){
-        Console.printItems(cart.getItems(), 1);
-        System.out.printf("총 구매금액: %.2f", cart.getTotalRevenue());
-        if (Console.isOkay("구매를 확정 하시겠습니까?(1: 구매완료, 나머지: 조회 종료)")) {
-            System.out.println("구매완료");
-            cart = new Cart();
-        }
-    }
-
-    private void handleCartDelete(){
-        while (!cart.isEmpty()) {
-            Console.printLine("0. 이전으로");
-            Console.printItems(cart.getItems(), 1);
-
-            int deleteInput = Console.getUserInput("삭제할 항목이 있다면 골라주세요", "[0-9]+");
-
-            if (Console.canEscape(deleteInput)) {
+            } else {
+                System.out.println("이전 메뉴로 돌아갑니다");
                 break;
             }
-            if (Console.isPossibleIndex(cart.getItems(), 0, deleteInput)) {
-                if (Console.isOkay("정말로 삭제하시겠습니까?? (1: 확정, 나머지: 취소)")) {
-                    Console.deleteSelection(cart.getItems(), deleteInput);
-                }
-            }
         }
     }
 
+    private void handleCartDelete() {
+        while (true) {
+            Console.printConsoleItems(cart.getItems(), 1);
+            System.out.println("0. 이전으로");
+
+            int deleteInput = InputHandler.getUserInput("삭제할 항목을 골라 주세요", "[0-9]+");
+            ArrayList<MenuItem> tmpItems = cart.getItems();
+
+            if (deleteInput == 0) {
+                break;
+            }
+            if (Console.isValidInput(tmpItems, deleteInput, 1)) {
+                String itemNameToRemove = tmpItems.get(deleteInput - 1).getName().trim();
+                ArrayList<MenuItem> cartItems = new ArrayList<>(tmpItems.stream()
+                        .filter(item -> !item.getName().trim().equals(itemNameToRemove))
+                        .toList());
+                cart.setItems(cartItems);
+                System.out.println("장바구니에서 항목이 제거되었습니다");
+            }
+
+        }
+    }
 }

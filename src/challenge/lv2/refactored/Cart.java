@@ -2,16 +2,15 @@ package challenge.lv2.refactored;
 
 import java.util.ArrayList;
 
-public class Cart implements Cloneable, iConsolable {
+public class Cart {
     private ArrayList<MenuItem> items;
 
     public Cart() {
-        this.items = new ArrayList<>();
+        items = new ArrayList<>();
     }
 
-
     public void addItem(MenuItem item) {
-        this.addItem(item, 1.0);
+        this.addItem(item, 0.0);
     }
 
     public void addItem(MenuItem item, double discount) {
@@ -19,40 +18,37 @@ public class Cart implements Cloneable, iConsolable {
         if (index >= 0) {
             // 이미 존재하는 경우 수량 증가
             items.get(index).increaseAmount();
-            items.get(index).saleRevenue(discount);
+            items.get(index).sellMore((1 - discount) * item.getPrice());
         } else {
             item.increaseAmount();
-            item.saleRevenue(discount);
+            item.sellMore((1 - discount) * item.getPrice());
             // 새로운 아이템이라면 리스트에 추가
             items.add(item);
         }
     }
 
-    public double getTotalRevenue() {
-        double total = 0.0;
-        for (MenuItem item : items) {
-            total += item.getSalePrice();
-        }
-        return total;
-    }
-
-
-    public ArrayList<MenuItem> getItems() {
-        return items;
+    public void setItems(ArrayList<MenuItem> items) {
+        this.items = items;
     }
 
     public boolean isEmpty(){
         return items.isEmpty();
     }
 
-    @Override
-    public String getInformation(int index) {
-        return String.format("%d", index);
+    public void clear(){
+        items.clear();
     }
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public ArrayList<MenuItem> getItems(){
+        return items;
+    }
+
+    public double getTotalRevenue() {
+        double total = 0.0;
+        for (MenuItem item : items) {
+            total += item.getTotalSale();
+        }
+        return total;
     }
 
 

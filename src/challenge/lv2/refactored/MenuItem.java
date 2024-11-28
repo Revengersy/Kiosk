@@ -1,22 +1,16 @@
 package challenge.lv2.refactored;
 
-public class MenuItem implements Cloneable, iConsolable {
+public class MenuItem implements Consolable {
     private final String name;
     private final double price;
     private final String explanation;
-    private double salePrice = 0.0;
-    private int amount = 0; // 담긴 수량
 
-    public MenuItem(String name) {
-        this(name, "(설명 입력되지 않음)");
-    }
+    private int amount = 0;
+    private double totalSale = 0;
 
+//    생성자 체이닝으로 이름, 가격이 있으면 생성 보장
     public MenuItem(String name, double price) {
         this(name, price, "(설명 입력되지 않음)");
-    }
-
-    public MenuItem(String name, String explanation) {
-        this(name, 5.0, explanation);
     }
 
     public MenuItem(String name, double price, String explanation) {
@@ -25,48 +19,35 @@ public class MenuItem implements Cloneable, iConsolable {
         this.explanation = explanation;
     }
 
-    public int getAmount() {
-        return amount;
+
+    public double getTotalSale() {
+        return totalSale;
     }
 
-    public double getSalePrice() {
-        return salePrice;
+    public double getPrice() {
+        return this.price;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public void increaseAmount() {
-        this.amount++;
+        amount++;
     }
 
-    public void decreaseAmount() {
-        this.amount--;
-    }
-
-    public void saleRevenue(double discount) {
-        this.salePrice += this.price * (1 - discount);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof MenuItem)) return false;
-        MenuItem other = (MenuItem) obj;
-        return name.equals(other.name) && price == other.price; // 이름과 가격이 동일하면 같은 아이템으로 간주
+    public void sellMore(double saleAmount) {
+        totalSale += saleAmount;
     }
 
 
     @Override
-    public String getInformation(int index) {
-        if (this.amount > 0) {
-            return String.format("%d. %s | 총 판매금액: %.2f | 총 판매 갯수: %d개 ", index, this.name, this.salePrice, this.amount);
-        } else {
-            return String.format("%d. %s | %.2f | %s", index, name, price, explanation);
-        }
+    public String getItemsInformation(int index) {
+        return String.format("%d. %-10s | %.2f | %10s", index, this.name, this.price, this.explanation);
     }
-
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public MenuItem getBasicItem() {
+        return  new MenuItem(this.name, this.price, this.explanation);
     }
-
 }

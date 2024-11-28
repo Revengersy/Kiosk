@@ -1,6 +1,6 @@
 package challenge.lv2.refactored;
 
-public enum UserType implements iConsolable {
+public enum UserType implements Consolable {
     VETERAN(1, "국가유공자", 0.10),
     SOLDIER(2, "군인", 0.05),
     STUDENT(3, "학생", 0.03),
@@ -17,13 +17,12 @@ public enum UserType implements iConsolable {
         this.discountRate = discountRate;
     }
 
-    // 외부 인쇄용
+    // 외부 반환용
     public double getDiscountRate() {
         return discountRate;
     }
 
-    // index에 따라 할인율을 찾는 메서드
-    public static double getDiscountByIndex(int index) {
+    private static double getDiscountByIndex(int index) {
         while (true) {
             for (UserType userType : UserType.values()) {
                 if (userType.index == index) {
@@ -35,7 +34,12 @@ public enum UserType implements iConsolable {
     }
 
     @Override
-    public String getInformation(int index){
+    public String getItemsInformation(int index){
         return String.format("%d. %s | %.2f", index, this.userCategory, this.discountRate);
+    };
+
+    @Override
+    public UserType getBasicItem(){
+        return this;
     };
 }
